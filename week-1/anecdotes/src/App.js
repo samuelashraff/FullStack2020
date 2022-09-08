@@ -1,7 +1,7 @@
 import {useState} from 'react'
 
 const generateRandomInteger = (max) => {
-  return Math.floor(Math.random() * max) + 1;
+  return Math.floor(Math.random() * max);
 }
 
 const App = () => {
@@ -15,19 +15,32 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]
 
-  const points = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0}
-  const copy = {...points}
-   
+  const points = [0, 0, 0, 0, 0, 0, 0]
+
   const [selected, setSelected] = useState(0)
+  const [point, setPoint] = useState(points)
+
+  
+
+  const VoteClick = () => {
+    const copy = [...point]
+    copy[selected] += 1
+    setPoint(copy)
+  }
+
+  const mostVoted = anecdotes[point.indexOf(Math.max(...point))]  // Find anecdote with most votes
 
   return (
     <div>
+      <h1><b>Anecdote of the day</b></h1>
       {anecdotes[selected]}
       <br/>
-      has {copy[selected]} votes
+      has {point[selected]} votes
       <br/>
-      <button onClick={() => copy[selected] += 1}>vote</button>
+      <button onClick={VoteClick}>vote</button>
       <button onClick={() => setSelected(generateRandomInteger(7))}>next anecdote</button>
+      <h1><b>Anecdote with most votes</b></h1>
+      <p>{mostVoted}</p>
     </div>
   )
 }
