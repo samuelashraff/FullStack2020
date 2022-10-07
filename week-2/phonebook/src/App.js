@@ -17,8 +17,7 @@ const App = () => {
   const [notificationStyle, setNotificationStyle] = useState("success")
 
   useEffect(() => {
-    axios
-    .get("http://localhost:3001/persons")
+    api.getAll()
     .then(response => {
       setPersons(response.data)
     })
@@ -61,8 +60,10 @@ const App = () => {
       .then(response => {
         setPersons(persons.concat(response))
       })
-      setNotificationMessage(`Added ${personObj.name}`)
-      setNotificationStyle("success")
+      .catch(error => {
+        setNotificationMessage(error.response.data.error)
+        setNotificationStyle("error")
+      })
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
